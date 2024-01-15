@@ -16,6 +16,8 @@ import lombok.Data;
  */
 //@NoArgsConstructor // 필드가 없는 생성자
 //@AllArgsConstructor // 모든 필드가 있는 생성자
+
+//@NoArgsConstructor
 @Data
 public class Board {
 	/*

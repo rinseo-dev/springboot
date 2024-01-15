@@ -22,10 +22,10 @@
   	from boardtest1
   </select>
   
-  <!-- boardType으로 받을 것 -->
+  <!-- parameterType을 boardType으로 받을 것 -->
   <insert id="insertBoard" parameterType="com.study.dto.Board">
   	insert into boardtest1
-  	values(boardtest1_seq.nextval, #{title},#{writer},#{content})
+  	values(boardtest1_seq.nextval, #{title}, #{writer}, #{content})
   </insert>
   
   <delete id="deleteBoard">
