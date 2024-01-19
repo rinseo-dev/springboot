@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>List</title>
+<link href="/css/index.css" rel="stylesheet"/>
+<link href="/css/boardList.css" rel="stylesheet"/>
+</head>
+<body>
+	<div th:replace="~{/fragments/header.html :: fragment-menu}"></div>
+	<h1 align="center">게 시 판</h1>
+	<div class="outer">
+		<div th:text="|총 게시글의 수: ${boardPage.totalElements}|"></div>
+		<!-- getTotalElements로 총 개수를 갖고 올 수 있음/html에선 get빠짐 -->
+	
+
+		<table id="list-area" align="center">
+            <thead>
+                <th width="10%">글번호</th>
+                <th width="47%">제목</th>
+                <th width="15%">작성자</th>
+                <th width="10%">조회수</th>
+                <th width="18%">작성일</th>
+            </thead>
+            <tbody>
+				<tr th:each="board, state: ${boardPage}">
+				<!-- ${(pi.totalRecord - (pi.nowPage-1)*pi.numPerPage)-s.index} -->
+					<td th:text="${boardPage.totalElements-nowPage*boardPage.size()-state.index}"></td>
+					<!-- 컨트롤러에서 넘겨받은 nowPage의 dafault값은 0
+						 한 페이지당 보여줄 개수는 size()
+						 연산이 곱하기부터 시작되므로 괄호는 딱히 없어도 됨 -->
+					<td>
+						<!-- <a href="detail.bo?bno=${b.board_no}">${b.board_title}</a>이걸 아래로 바꿈 -->
+						<a th:href="@{detail(bno=${board.bno})}" th:text="${board.title}"></a>
+						<!-- detail로 가는 링크 : board.bno번호를 bno=에 붙이는 get링크 -->
+					</td>
+					
+					<!-- ${b.board_writer} -->		
+					<td th:text="${board.writer}"></td>
+					<!-- ${b.count} -->
+					<td th:text="${board.count}"></td>	               
+					<!-- ${b.create_date} -->
+					<td th:text="${board.creatrDate}"></td>
+					<td th:text="*{#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+					<!-- DB에 있는 create_date값을 그대로 출력하면 밀리초까지 나옴. 그래서 미리 포멧지정해서 출력 -->
+				</tr>	
+            </tbody>
+        </table>
+        
+        <!-- 페이징 처리 -->
+        <div align="center">
+        	<!-- prev -->
+        	<span th:if="${nowPage>0}">
+        		<!-- preview를 했으면 이전페이지로 가게 -->
+        		<a th:href="@{${'/list'}(nowPage=${nowPage-1})}">Prev...</a>
+        		<!-- prev는 한 칸 앞으로 가야하므로 nowPage-1을 한 값을 nowPage에 넣어줌 -->
+        	</span>
+        	<!--
+        		#numbers : thymeleaf에서 숫자 포맷 메소드를 지원해줌
+        		sequence()메소드 : range(start, end, step)
+        		ex) range(10,0,-2) -> 10부터 0까지를 -2씩 차감하는 방식
+        	-->
+        	
+        	<!-- 여기는 페이지번호 -->
+        	<span th:each="pageNumber : ${#numbers.sequence(0, boardPage.totalPages-1)}">
+        		<span th:if="${pageNumber == nowPage}">
+        		<!-- 현재 보고 있는 페이지와 pageNumber가 같으면 페이지 번호 진하게, 아닌 경우 보통 굵기 출력-->
+        			<strong th:text="|[${pageNumber+1}]|"></strong> 
+        		</span>
+        		<span th:unless="${pageNumber == nowPage}"><!-- th:if="${pageNumber != nowPage}"도 가능 -->
+        			<a th:href="@{${'/list'}(nowPage=${pageNumber})}" th:text="|[${pageNumber+1}]|"></a>
+        					<!-- 페이지는 실제 첫페이지가 0번부터이므로 보여줄때는+1로 해야 0페이지일때 1페이지로 표시됨 -->
+        		</span>
+        	</span>
+        	
+        	<!-- next -->
+        	<span th:if="${nowPage<boardPage.totalPages-1}">
+        		<!-- preview를 했으면 이전페이지로 가게 -->
+        		<a th:href="@{${'/list'}(nowPage=${nowPage+1})}">...Next</a>
+        		<!-- prev는 한 칸 앞으로 가야하므로 nowPage-1을 한 값을 nowPage에 넣어줌 -->
+        	</span>
+        </div>
+        <div th:if="${loginUser != null}">
+        	<a href="insertForm">새 글 등록</a>
+        </div>
+    </div>
+</body>
+</html>

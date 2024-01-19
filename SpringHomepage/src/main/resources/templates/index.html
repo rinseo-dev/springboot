@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>index</title>
+<link href="/css/index.css" rel="stylesheet"/>
+<!-- css가 들어간 폴더의 루트("/")는 static을 가리킴 -->
+</head>
+<body>
+	<!-- <div th:replace="/fragments/header.html :: fragment-menu"> -->
+	<div th:replace="~{/fragments/header.html :: fragment-menu}"></div>
+	<!-- replace할 파일의 주소를 적고 :: 뒤에 해당 파일 이름 붙이기 th:fragment="fragment-menu" -->
+	
+	<div class="imgwrap">
+		<img src="/img/bbak.jpg" alt="spring img">
+	</div>
+	
+</body>
+</html>

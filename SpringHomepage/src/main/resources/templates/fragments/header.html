@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"><!-- thymeleaf 사용 -->
+	<div th:fragment="fragment-menu">
+		<h1 align="center">SpringBoot Homepage</h1>
+			<br>
+			<!-- c를 사용할 때 choose,when,otherwise로 사용하던걸 th:if, th:unless로 사용 -->
+			<div th:if="${loginUser ==null}" class="login-area" align="right">
+				<form action="login" method="post">
+					<table>
+						<tr>
+							<td>아이디</td>
+							<td><input name="id" required></td>
+							<td rowspan="2"><button style="height: 50px;">로그인</button></td>
+						</tr>
+						<tr>
+							<td>비밀번호</td>
+							<td><input type="password" name="password" required></td>
+						</tr>
+						<tr>
+							<td colspan="3" align="center">
+								<a href="enrollForm">회원가입</a>&emsp;
+								<a href="">아이디/비번찾기</a>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+	
+			<!-- 로그인 후 -->
+			<div th:if="${loginUser != null}" align="right"><!-- th:unless="${loginUser == null}"도 가능 -->
+			<!-- ${loginUser ==null}가 거짓이면(unless) 실행됨 -->
+				<table>
+					<tr>
+						<td colspan="2">
+							<h3 th:text="|${ loginUser.name }님 환영합니다|"></h3>
+							<!-- |${ loginUser.name }님 환영합니다|앞 뒤로 파이프 -->
+						</td>
+					</tr>
+					<tr>
+						<td><a href="">마이페이지</a> /</td>
+						<td><a href="logout">로그아웃</a></td>
+					</tr>
+				</table>
+			</div>
+			
+			<br>
+		
+			<table class="nav-area" align="center">
+				<tr>
+					<td>HOME</td>
+					<td>공지사항</td>
+					<td onclick="location.href='list'">게시판</td>
+					<!-- '$'가 안들어가면 html로 작성가능, $사용해서 변수가 들어가면 th:추가 입력 -->
+					<td>ETC</td>
+				</tr> 
+			</table>
+	</div>
+</html>
