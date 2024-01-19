@@ -14,9 +14,10 @@ public class MemberService {
 	@Autowired
 	private MemberRepository memberRepository;
 
-	public Page<Member> selectByNameLike(String name, Pageable pageable) {
-		Page<Member> member = memberRepository.findByNameLike(name, pageable);
-		return member;
+	public Member insert(Member member) { // 반환형 Member로 해줌
+		//Member rMember = memberRepository.save(member);
+		//return rMember;
+		 return memberRepository.save(member);
 	}
 
 	

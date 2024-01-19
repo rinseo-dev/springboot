@@ -20,14 +20,31 @@ import com.study.service.MemberService;
 public class MemberController {
 	@Autowired
 	MemberService memberService;
-	
+
 	@RequestMapping("/")
-	public String root() throws Exception{
+	public String root() throws Exception {
 		return "menu";
 	}
+
+	@GetMapping("/selectByNameLike1")
+	public String selectMembers1(@RequestParam("name") String search, Model model) {
+		String name = search + "%";
+		model.addAttribute("members",memberService.selectMembers1(name));
+		
+		return "select_name_list1";
+	}
 	
-	@GetMapping("/selectByNameLike")
-	public String selectByNameLike(@RequestParam("name") String search,
+	@GetMapping("/selectByNameLike2")
+	public String selectMembers2(@RequestParam("name") String search, Model model) {
+		String name = search + "%";
+		Sort sort = Sort.by(Sort.Order.asc("id"));
+		model.addAttribute("members",memberService.selectMembers2(name, sort));
+		
+		return "select_name_list1";
+	}
+
+	@GetMapping("/selectByNameLike3")
+	public String selectMembers3(@RequestParam("name") String search,
 								   @RequestParam("page") int page,
 								   Model model) {
 		/*
@@ -37,6 +54,7 @@ public class MemberController {
 		 * 
 		 * Model은 값을 이용하기 위해서 사용
 		 */
+	
 		String name = search + "%";
 		Sort sort = Sort.by(Sort.Order.desc("name")); // name 내림차순으로 sort
 		// JPA에서 paging 1페이지는 0부터 시작 <-정해져있음 지켜줘야함
@@ -44,12 +62,13 @@ public class MemberController {
 		
 		// api로 만들어져있는 domain.Pageable을 import
 		Pageable pageable = PageRequest.ofSize(10).withPage(nPage).withSort(sort);
+		
 		/*
 		 * ofSize() : 한페이지에 몇개씩 보여주고 싶은지 작성
 		 * .withPage(nPage) : PageRequest에 페이지번호를 설정
 		 * .withSort(sort): 생성된 PageRequest에 정렬 정보를 설정
 		 */
-		Page<Member> result = memberService.selectByNameLike(name,pageable);
+		Page<Member> result = memberService.selectMembers3(name,pageable);
 		List<Member> content = result.getContent(); // 실제 객체가 담긴 List(내용물은 content)
 		long totalElements = result.getTotalElements(); // 토탈 content개수
 		int totalPages = result.getTotalPages(); // 토탈 페이지 수
@@ -64,6 +83,15 @@ public class MemberController {
 		model.addAttribute("pageNumber", pageNumber);
 		model.addAttribute("numberOfElements", numberOfElements);
 		
-		return "select_list";
+		return "select_name_list2";
+	}
+	
+	@GetMapping("/selectByNameLike4")
+	public String selectMembers4(@RequestParam("name") String search, Model model) {
+		String name = search + "%";
+		Sort sort = Sort.by(Sort.Order.asc("id"));
+		model.addAttribute("members",memberService.selectMembers4(name, sort));
+		
+		return "select_name_list1";
 	}
 }

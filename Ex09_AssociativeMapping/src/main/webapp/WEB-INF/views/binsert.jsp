@@ -4,13 +4,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Select</title>
+<title>binsert</title>
 </head>
 <body>
-	<h1>Member JPA #02 - SelectByEmail</h1>
-	   
-	아이디 : ${member.id}<br>
-	이름 : ${member.name}<br>
-	이메일 : ${member.email}<br>
+	<h1>게시판 글 등록 성공</h1>
+	제목 : ${board.title }<br>
+	내용 : ${board.content }<br>
+	작성자 : ${board.member }
 </body>
 </html>

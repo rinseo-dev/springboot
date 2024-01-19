@@ -4,13 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Select</title>
+<title>mInsert</title>
 </head>
 <body>
-	<h1>Member JPA #02 - Select_id</h1>
-	   
-	아이디 : ${member.id}<br>
-	이름 : ${member.name}<br>
-	이메일 : ${member.email}<br>
+	<h1>회원등록 성공</h1>
 </body>
 </html>
