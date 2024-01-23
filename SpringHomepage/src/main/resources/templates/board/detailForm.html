@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="/css/index.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+</head>
+<body>
+	<div th:replace="~{/fragments/header.html :: fragment-menu}"></div>
+	<div class="outer">
+		<form action="update" method="post">
+			<table align="center">
+				<tr>
+					<th colspan="2" bgcolor="#AFA226" height="30">상 세 보 기</th>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input name="title" th:value="${board.title}"></td>
+				</tr>
+				<tr>
+					<td>내용</td>
+					<td><textarea name="content" rows="10" cols="50" th:text="${board.content}"></textarea></td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td th:text="${board.writer}"></td>
+				</tr>
+				<tr>
+					<td>작성일</td>
+					<td th:text="*{#temporals.format(board.createDate, 'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right" th:text="|조회수 : ${board.count}|"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><hr></td>
+				</tr>
+				<span th:if="${loginUser != null}">
+					<tr>
+						<td colspan="2" align="center">
+							<input type="submit" value="수정">
+							<button type="button" onclick="location.href='delete?no=${board.no}'">삭제</button>
+						</td>
+					</tr>
+				</span>
+			</table>
+			<input type="hidden" name="bno" th:value="${board.bno}">
+		</form>
+		
+		<br>
+		<table align="center" style="width:700px;">
+        <tr>
+            <th width="15%">댓글작성</th>
+            <th width="70%"><textarea cols="70" rows="3" id="replyContent"></textarea></th>
+            <th width="15%"><button type="button" th:onclick="insertReply();">등록</button></th>
+        </tr>
+        <tr>
+            <td colspan="3" style="text-align: right;">댓글의 총 갯수 : [[${replyList.size()}]]</td>
+        </tr>
+
+        <tr th:each="r : ${replyList}">
+            <td th:text="${r.name}"></td>
+            <td th:text="${r.content}"></td>
+            <!-- <td th:text="${r.createDate}"></td> -->
+            <td th:text="*{#temporals.format(r.createDate, 'yyyy-MM-dd')}"></td>
+        </tr>
+    </table>
+	</div>
+	
+	<!-- 댓글 -->
+	<!-- <table id="reply" align="center">
+		<thead>
+			<tr>
+				<td>댓글 작성</td>
+				
+				로그인한 사람만 댓글 등록
+				<span th:if="${loginUser != null}">
+					<td>
+						<textarea rows="3" cols="50" id="replyContent"></textarea>
+					</td>
+					<td>
+						<button onclick="insertReply();">댓글등록</button>
+					</td>
+				</span>
+				<span th:unless="${loginUser != null}">
+					<td>
+						<textarea rows="3" cols="50" readonly>로그인 후 이용 가능한 서비스</textarea>
+					</td>
+					<td>
+						<button disabled>댓글등록</button>
+					</td>
+				</span>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table> -->
+<script>
+/* function selectReplyList(){ // 댓글이 올라오면 얘가 무조건 호출되게
+	$.ajax({
+		url:"replyList",
+		data:{bnum:ref},
+		success:function(list){ // list는 배열값임.
+			console.log(list);
+			let result = "";
+			for(let i=0; i<list.length; i++){
+				result += "<tr>"
+					   +	"<td>"+list[i].name+"</td>"
+					   +	"<td>"+list[i].content+"</td>"
+					   +	"<td>"+list[i].regdate.substring(0,10)+"</td>"
+					   +  "</tr>";
+			}
+			$("#reply tbody").html(result);
+		},
+		error:function(){
+			console.log("댓글목록조회 ajax통신 실패");
+		}
+	})
+} */
+
+function insertReply(){
+	$.ajax({
+		url:"rinsert",
+		data:{
+			bno:"[[${board.bno}]]", // 부모글 번호
+			name:"[[${loginUser != null ? loginUser.id : ''}]]",
+			content:$("#replyContent").val() // 사용자가 replyContent에 입력한 값
+		},
+		type:"post", // 넘길 컨텐츠 내용이 많을 경우 url보다 post로 넘겨주는게 좋음
+		success:function(result){
+			console.log(result);
+			location.reload();
+		},
+		error:function(){
+			console.log("댓글 등록 ajax통신 실패");
+		}
+	})
+}
+</script>
+</body>
+</html>

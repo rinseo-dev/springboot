@@ -32,8 +32,9 @@
 				<table>
 					<tr>
 						<td colspan="2">
-							<h3 th:text="|${ loginUser.name }님 환영합니다|"></h3>
+							<!-- <h3 th:text="|${ loginUser.name }님 환영합니다|"></h3> -->
 							<!-- |${ loginUser.name }님 환영합니다|앞 뒤로 파이프 -->
+							<h3>[[${loginUser.name}]]님 환영합니다</h3>
 						</td>
 					</tr>
 					<tr>
