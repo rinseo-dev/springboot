@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Data
 @NoArgsConstructor
 public class Member {
@@ -48,5 +47,5 @@ public class Member {
 	// 수정할 때 시간 등록
 	@LastModifiedDate
 	@Column(name="update_date")
-	private LocalDateTime updatteDate;
+	private LocalDateTime updateDate;
 }

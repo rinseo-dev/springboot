@@ -75,7 +75,7 @@
 							if(result) { // controller에서 result값이 true, false로 넘어옴/true면 중복아이디 존재
 								$("#checkResult").show();
 								$("#checkResult").css("color","red").text("중복된 아이디가 존재합니다. 다시 입력해 주세요");   
-								$("#enrollForm :submit").attr("disabled", true);
+								$("#enrollForm :submit").attr("disabled", true); // submit 버튼에 대한 것
 							} else {
 								$("#checkResult").show();
 								$("#checkResult").css("color","green").text("사용할 수 있는 아이디 입니다");   
